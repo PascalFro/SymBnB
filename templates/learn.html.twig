@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+  <h2>Voici le header de la page</h2>
+{% endblock %}
+
+{% block body %}
+  <h1>{{ title | upper }}</h1>
+  <p>Le vrai titre est : {{ title }}</p>
+  <p>Ceci est ma première page Symfony</p>
+
+  <a href="{{ path('hello', {'prenom' : 'Pascal', 'age' : 31})}}">Allez voir la page Hello</a>
+
+  {# (Syntaxe des commentaires de twig)
+  {% if age >= 18 %}
+    <p>Vous êtes un adulte</p>
+  {% elseif age >= 12 %}
+    <p>Vous êtes un ado</p>
+  {% else %}
+    <p>Vous êtes un enfant</p>
+  {% endif %}
+  #}
+
+  {% for prenom in tableau %}
+    <p>{{ prenom}}</p>
+  {% endfor %}
+
+  {% for prenom, age in tableau %}
+    <p>(itération n° {{ loop.index0 }}) : {{ prenom}} a {{ age }} ans</p>
+  {% endfor %}
+
+  {% for prenom, age in tableau %}
+    {% if loop.first %}
+      <p><b>{{ prenom}} a {{ age }} ans</b></p>
+    {% elseif loop.last %}
+      <p><i>{{ prenom}} a {{ age }} ans</i></p>
+    {% else %}
+      <p>{{ prenom}} a {{ age }} ans</p>
+    {% endif %}
+  {% endfor %}
+
+<ul>
+  {% for compteur in 1..10 %}
+    <li>{{ compteur }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
