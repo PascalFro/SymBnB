@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création d'une annonce{% endblock %}
+
+{% block body %}
+
+  <div class="container">
+    <h1>Créer une nouvelle annonce</h1>
+    {#
+
+    {{ form_start(form) }}
+
+    {{ form_widget(form) }}
+
+    <button type="submit" class="btn btn-primary">Créer la nouvelle annonce</button>
+    {{ form_end(form) }}
+
+    Tout ce code peut être remplacé par la fonction form()
+    Elle est l'équivalent de forme_start() + form_widget() + form_end()
+
+    Il nous manque par contre le bouton submit - on rajoute alors un champs dans la création du formulaire
+
+    #}
+
+    {{ form(form) }}
+
+  </div>
+
+{% endblock %}
