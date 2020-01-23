@@ -28,14 +28,9 @@ public function hello($prenom = "anonyme", $age = 0) {
 * @Route("/", name="homepage")
 */
   public function home() {
-    $prenom = ["Pascal" => 47, "Marie-Pierre" => 51,"Marion" => 22, "Amélie" => 20];
 
     return $this->render(
       'home.html.twig',
-      [ 'title' => "Bonjour à tous et à toutes !",
-        'age' => 10,
-        'tableau' => $prenom
-      ]
     );
   }
 
