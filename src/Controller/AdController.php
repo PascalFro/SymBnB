@@ -9,6 +9,8 @@ use App\Repository\AdRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Form\AdType;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 
 class AdController extends AbstractController {
@@ -36,7 +38,7 @@ class AdController extends AbstractController {
      * @return Response
      */
 
-        public function create() {
+        public function create(Request $request, EntityManagerInterface $manager) {
 
             $ad = new Ad();
 
@@ -62,6 +64,26 @@ class AdController extends AbstractController {
             /* On a créer à la place de tout ce code trop volumineux pour un controller, la classe form, qui va nous permettre d'instancier un form externe avec la fonction createForm qui permet de créer un formulaire externe */
 
             $form = $this->createForm(AdType::class, $ad);
+
+            $form->handleRequest($request);
+
+
+
+            if($form->isSubmitted() && $form->isValid()) {
+                // $manager = $this->getDoctrine()->getManager();
+
+                $manager->persist($ad);
+                $manager->flush();
+
+                $this->addFlash(
+                'success',
+                "L'annonce <b>{$ad->getTitle()}</b> a bien été enregistrée !"
+            );
+
+                return $this->redirectToRoute('ads_show', [
+                    'slug' => $ad->getSlug()
+                    ]);
+            }
 
             return $this->render('ad/new.html.twig', [
                 'form' => $form->createView()
