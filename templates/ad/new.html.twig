@@ -2,6 +2,8 @@
 
 {% block title %}Création d'une annonce{% endblock %}
 
+{% form_theme form 'ad/_collection.html.twig' %}
+
 {% block body %}
 
   <div class="container">
@@ -17,7 +19,6 @@
     {{ form_end(form) }}
 
     {#
-
     Tout ce code peut être remplacé par la fonction form()
     Elle est l'équivalent de forme_start() + form_widget() + form_end()
 
@@ -27,5 +28,11 @@
     #}
 
   </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+<script src="/js/ad.js"></script>
 
 {% endblock %}

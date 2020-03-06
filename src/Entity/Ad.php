@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Cocur\Slugify\Slugify;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdRepository")
  * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(
+ *     fields={"title"},
+ *     message="Une autre annonce possède déjà le même titre ! Merci de le modifier")
  */
 class Ad
 {
@@ -22,6 +27,13 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 255,
+     *      minMessage = "Votre titre doit contenir au moins 10 caractères",
+     *      maxMessage = "Votre titre doit contenir au maximum 10 caractères"
+     * )
      */
     private $title;
 
@@ -37,11 +49,19 @@ class Ad
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *      min = 20,
+     *      minMessage = "Votre introduction doit contenir au moins 20 caractères",
+     * )
      */
     private $introduction;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *      min = 100,
+     *      minMessage = "Votre description ne peut pas faire moins 100 caractères",
+     * )
      */
     private $content;
 
@@ -57,6 +77,7 @@ class Ad
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="ad", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $images;
 
@@ -67,8 +88,10 @@ class Ad
 
     /**
     * Permet d'initialiser le slug
+    *
     * @ORM\PrePersist
     * @ORM\PreUpdate
+    * On prévient Doctrine
     **/
 
     public function InitializeSlug() {
