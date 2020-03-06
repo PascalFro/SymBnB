@@ -1,0 +1,42 @@
+{% block _ad_images_widget %}
+    <p>Ici, vous pouvez ajouter vos propres images !</p>
+
+    {{ form_widget(form) }}
+
+    <input type="hidden" id="widgets-counter" value="0" >
+    {# Rappel sur les inputs non nommés : un champ qui n'a pas d'attribut "name" n'est pas envoyé au serveur #}
+
+    <div class="form-group">
+        <button type="button" id="add-image" class="btn btn-primary">Ajouter une image</button>
+    </div>
+
+{% endblock %}
+
+{% block _ad_images_entry_row %}
+    {# Par ce block, nous disons à Twig que, pour chaque Entry, nous voulons redéfinir la façon dont va être affichée la "row" (qui contient le label, les erreurs, le widget et les aides.  #}
+    {{ form_widget(form)}}
+    {# Ici, nous ne voulons appeler que le widget, et le widget d'une entry ici, c'est deux champs. #}
+
+{% endblock %}
+
+{% block _ad_images_entry_widget %}
+    <div class="form-group" id="block_{{id}}">
+        <div class="row">
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        {{ form_widget(form.url) }}
+                        {{ form_errors(form.url) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(form.caption) }}
+                        {{ form_errors(form.caption) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
