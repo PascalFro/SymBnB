@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Ad;
+use App\Form\ApplicationType;
 use App\Form\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -14,26 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AdType extends AbstractType
+class AdType extends ApplicationType
 {
-
-    /**
-     * Permet d'avoir la configuration de base d'un champ
-     *
-     * @param  string $label       [description]
-     * @param  string $placeholder [description]
-     * @param  array $Options      [description]
-     * @return array               [description]
-     */
-
-    private function getConfiguration($label, $placeholder, $options =[]) {
-        return array_merge([
-                'label' => $label,
-                'attr' => ['placeholder' => $placeholder]
-            ], $options);
-    }
-
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

@@ -1,13 +1,34 @@
 security:
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: null }
+        in_database:
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: lazy
+
+            provider: in_database
+
+            form_login:
+                login_path: account_login
+                # Chemin pour aller à la page de connexion
+                check_path: account_login
+                # Chemin sur lequel je dois vérifier les informations d'authentifications
+
+            logout:
+                path: account_logout
+                # Chemin pour aller à la page de connexion
+                target: account_login
+                # Page à afficher une fois le déconnexion effectuée
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
