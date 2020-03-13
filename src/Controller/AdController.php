@@ -7,6 +7,8 @@ use App\Entity\Image;
 use App\Form\AdType;
 use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 class AdController extends AbstractController {
+
+
     /**
+     * Affiche toutes les annonces
      * @Route("/ads", name="ads_index")
      */
-
     public function index(AdRepository $repo)
     {
         // AdRepository $repo est une injection de dépendance, et évite le code suivant :
@@ -35,10 +39,10 @@ class AdController extends AbstractController {
      * Permet de créer une annonce
      *
      * @Route("/ads/new", name="ads_create")
+     * @IsGranted("ROLE_USER")
      *
      * @return Response
      */
-
     public function create(Request $request, EntityManagerInterface $manager) {
 
         $ad = new Ad();
@@ -128,10 +132,10 @@ class AdController extends AbstractController {
      * Permet d'afficher le formulaire d'édition
      *
      * @Route("ads/{slug}/edit", name="ads-edit")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Cette annonce ne vous appartient pas, vous ne pouvez pas la modifier !")
      *
      * @return Response [description]
      */
-
        public function edit(Ad $ad, Request $request, EntityManagerInterface $manager) {
 
         $form = $this->createForm(AdType::Class, $ad);
@@ -199,4 +203,25 @@ class AdController extends AbstractController {
             ]);
     }
 
+    /**
+     * Permet de supprimer une annonce
+     *
+     * @Route("/ads/{slug}/delete", name="ads_delete")
+     * @Security("is_granted('ROLE_USER') and user == ad.getAuthor()", message="Vous ne disposez pas des droits pour accéder à cette ressource")
+     *
+     * @param  Ad                     $ad
+     * @param  EntityManagerInterface $manager
+     * @return Response
+     */
+    public function delete(Ad $ad, EntityManagerInterface $manager) {
+        $manager->remove($ad);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "L'annonce a bien été supprimmée !"
+        );
+
+        return $this->redirectToRoute("ads_index");
+    }
 }
