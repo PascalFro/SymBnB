@@ -21,7 +21,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class AccountController extends AbstractController
 {
     /**
-     * Permet d'afficher et de gére le formulaire de connexion
+     * Permet d'afficher et de gérer le formulaire de connexion
      * @Route("/login", name="account_login")
      * @return  Response
      */

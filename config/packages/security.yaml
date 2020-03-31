@@ -13,6 +13,25 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        admin:
+            pattern: ^/admin
+            anonymous: true
+
+            provider: in_database
+
+            form_login:
+                login_path: admin_account_login
+                # Chemin pour aller à la page de connexion
+                check_path: admin_account_login
+                # Chemin sur lequel je dois vérifier les informations d'authentifications
+
+            logout:
+                path: admin_account_logout
+                # Chemin pour aller à la page de connexion
+                target: homepage
+                # Page à afficher une fois le déconnexion effectuée
+
         main:
             anonymous: lazy
 
@@ -39,5 +58,6 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

@@ -2,17 +2,18 @@
 
 namespace App\Form;
 
+use App\Entity\Ad;
 use App\Entity\Booking;
-use App\Form\ApplicationType;
+use App\Entity\User;
 use App\Form\DataTransformer\FrenchToDateTimeTransformer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BookingType extends ApplicationType {
+class AdminBookingType extends AbstractType {
 
     private $transformer;
 
@@ -24,9 +25,18 @@ class BookingType extends ApplicationType {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startDate', TextType::Class, $this->getConfiguration("Date d'arrivée", "La date à laquelle vous comptez arriver"))
-            ->add('endDate', TextType::Class, $this->getConfiguration("Date de départ", "La date à laquelle vous souhaitez quitter les lieux"))
-            ->add('comment', TextareaType::Class, $this->getConfiguration(false, "Si vous avez un commentaire, n'hésitez pas à nous ne faire part !", ["required" => false]))
+            ->add('startDate', TextType::Class)
+            ->add('endDate', TextType::Class)
+            ->add('comment')
+            ->add('booker', EntityType::class, [
+                'class' => User::Class,
+                'choice_label' => function($user) {
+                    return $user->getFirstName() . ' ' . strtoupper($user->getLastName());
+                }])
+            ->add('ad', EntityType::Class, [
+                'class' => Ad::Class,
+                'choice_label' => 'title'
+            ])
         ;
 
         $builder->get('startDate')->addModelTransformer($this->transformer);
@@ -37,10 +47,6 @@ class BookingType extends ApplicationType {
     {
         $resolver->setDefaults([
             'data_class' => Booking::class,
-            'validation_groups' => [
-                'Default',
-                'front'
-            ]
         ]);
     }
 }

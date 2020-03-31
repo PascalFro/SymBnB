@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Ad;
 use App\Entity\Booking;
+use App\Entity\Comment;
 use App\Form\BookingType;
+use App\Form\CommentType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,7 +34,7 @@ class BookingController extends AbstractController
         $booking->setBooker($user)
                 ->setAd($ad);
 
-        // Si les dates ne sont pas dispon ibles, message d'erreur
+        // Si les dates ne sont pas disponibles, message d'erreur
          if(!$booking->isBookableDates()) {
           $this->addFlash(
             'warning', "Les dates que vous avez choisies ne peuvent être réservées, elles sont déjà prises"
@@ -46,8 +48,6 @@ class BookingController extends AbstractController
         return $this->redirectToRoute('booking_show', ['id' => $booking->getId(), 'withAlert' => true]);
       }
     }
-
-
 
       return $this->render('booking/book.html.twig', [
           'ad' => $ad,
@@ -63,9 +63,28 @@ class BookingController extends AbstractController
  * @param  Booking $booking
  * @return Response
  */
-  public function show(Booking $booking) {
+  public function show(Booking $booking, Request $request, EntityManagerInterface $manager) {
+    $comment = new Comment();
+
+    $form = $this->createForm(CommentType::Class, $comment);
+
+    $form->handleRequest($request);
+
+    if($form->isSubmitted() && $form->isValid()) {
+      $comment->setAd($booking->getAd())
+              ->setAuthor($this->getUser());
+
+      $manager->persist($comment);
+      $manager->flush();
+
+      $this->addFlash(
+        'success',
+        "Votre commentaire à bien été pris en compte !");
+    }
+
     return $this->render('booking/show.html.twig', [
-      'booking' => $booking
+      'booking' => $booking,
+      'form' => $form->createView()
     ]);
   }
 }

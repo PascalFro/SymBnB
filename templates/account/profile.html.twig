@@ -5,12 +5,39 @@
 {% block body %}
 
 <div class="container">
-  <h1>Modifcation du profil</h1>
+  <h1 class="my-5">Modifcation du profil</h1>
 
   {{ form_start(form) }} {# On commence le formulaire#}
-  {{ form_widget(form )}} {# On affiche tous les champs qui sont dans form#}
 
-  <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-light">
+          <h2 class="alert-heading">Informations générales</h2>
+          <hr>
+          {{ form_row(form.firstName) }}
+          {{ form_row(form.lastName) }}
+          {{ form_row(form.email) }}
+          {{ form_row(form.picture) }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="alert alert-light">
+          <h2 class="alert-heading">Détails</h2>
+          <hr>
+          {{ form_row(form.introduction) }}
+          {{ form_row(form.description) }}
+
+          <hr>
+          <p>Si vous avez terminer vos modifications, vous pouvez les sauvegarder</p>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i>&nbsp;
+            Enregistrer les modifications
+          </button>
+        </div>
+      </div>
+    </div>
+
+  {#{{ form_widget(form )}}  On affiche tous les champs qui sont dans form, mais là, nousn'en avon splus besoin car nous avons mis des form_row pour tous les champs#}
 
   {{ form_end(form) }} {# On termine le formulaire#}
 

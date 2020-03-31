@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Connexion à l'administration</title>
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+    }
+    .card {
+      margin-top: 10%;
+    }
+  </style>
+</head>
+<body>
+  <div class="col-md-4">
+    <div class="card bg-light">
+      <div class="card-header">
+        <h4 class="card-title">
+          <i class="fas fa-lock"></i>&nbsp;
+          Connexion à l'administration
+        </h4>
+      </div>
+      <div class="card-body">
+        {% if hasError %}
+          <div class="alert alert-warning">
+            <p>Les informations saisies ne sont pas bonnes.</p>
+          </div>
+        {% endif %}
+        <form method="post">
+          <div class="form-group"><label for="_username">Email</label><input type="text" class="form-control" name="_username" placeholder="Adresse Email..." value="{{ username }}"></div>
+          <div class="form-group"><label for="_password">Mot de passe</label><input type="password" class="form-control" name="_password" placeholder="Mot de passe..."></div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-lock-open"></i>&nbsp;
+              Connexion !
+            </button>
+            <a href="{{ path('admin_ads_index') }}" class="btn btn-link">
+              <i class="fas fa-arrow-circle-left"></i>&nbsp;
+              Retour au site
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<script src="https://kit.fontawesome.com/5d9293ae7b.js" crossorigin="anonymous"></script>
+</body>
+</html>
