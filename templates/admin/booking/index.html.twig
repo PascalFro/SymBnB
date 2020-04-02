@@ -22,7 +22,7 @@
       </tr>
     </thead>
     <tbody class="align-middle">
-      {% for booking in bookings %}
+      {% for booking in pagination.data %}
         <tr>
           <td>{{ booking.id }}</td>
           <td class="text-center">{{ booking.createdAt | date('d/m/Y H:m') }}</td>
@@ -40,5 +40,6 @@
       {% endfor %}
     </tbody>
   </table>
+  {{ pagination.display() }}
 </div>
 {% endblock %}

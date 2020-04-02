@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Form\AdType;
 use App\Repository\AdRepository;
+use App\Service\PaginationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,13 +15,37 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminAdController extends AbstractController
 {
     /**
-     * @Route("/admin/ads", name="admin_ads_index")
-     * @route("/admin", name="admin_account")
+     * @Route("/admin/ads/{page<\d+>?1}", name="admin_ads_index")
+     * @route("/admin/{page<\d+>?1}", name="admin_account")
      */
-    public function index(AdRepository $repo)
+    public function index(AdRepository $repo, $page, PaginationService $pagination)
     {
+      /** Exemple avant pagination
+        $limit = 10;
+
+        $start = $page * $limit - $limit;
+
+        $total = count($repo->findAll());
+
+        $pages = ceil($total / $limit); // ceil est une fonction de php qui permet d'arrondir à l'entier supérieur, Ex 3.4 => 4
+
         return $this->render('admin/ad/index.html.twig', [
-          'ads' => $repo->findAll()
+          // 'ads' => $repo->findAll() Permet d'afficher toutes les annonces
+          'ads' => $repo->findBy([], [], $limit, $start),  // Permet de n'afficher que les annonces sélectionnées
+          'pages' => $pages,
+          'page' => $page
+        ]);
+        */
+
+        $pagination->setEntityClass(Ad::Class)
+                    ->setPage($page);
+
+        return $this->render('admin/ad/index.html.twig', [
+          // 'bookings' => $pagination->getData(),
+          // 'pages' => $pagination->getPages(),
+          // 'page' => $page
+          // A la place de tout cela, nous pouvons écrire :
+          'pagination' => $pagination
         ]);
     }
 
