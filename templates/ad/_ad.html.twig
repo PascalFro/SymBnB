@@ -3,7 +3,7 @@
   <div class="col-md-4">
     <div class="card bg-light mb-3">
       <div class="card-header text-center">
-        {{ ad.rooms }} chambres, <b>{{ ad.price | number_format(2, ',', ' ') }} &euro; par nuit</b></br>
+        {{ ad.rooms }} chambre(s), <b>{{ ad.price | number_format(2, ',', ' ') }} &euro; par nuit</b></br>
         {% if ad.comments|length > 0 %}
           {% include 'partials/rating.html.twig' with {'rating' : ad.avgRatings} %}
         {% else %}

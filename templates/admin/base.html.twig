@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Mon appli Symfony! - {% block title %}{% endblock %}</title>
+      <meta charset="UTF-8">
+      <title>Mon appli Symfony! - {% block title %}{% endblock %}</title>
 
-        <meta name="viewport" content="width=device-width, user-scalable=no">
+      <meta name="viewport" content="width=device-width, user-scalable=no">
 
-        <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/app.css">
-        {% block stylesheets %}{% endblock %}
+      <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+      <link rel="stylesheet" href="/css/app.css">
+      {% block stylesheets %}{% endblock %}
     </head>
     <body>
       {% include 'admin/partials/header.html.twig' %}
@@ -22,6 +22,6 @@
         <script type="text/javascript" src="/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/5d9293ae7b.js" crossorigin="anonymous"></script>
 
-      {% block javascripts %}{% endblock %}
+      {% block javascripts %} {% endblock %}
     </body>
 </html>
