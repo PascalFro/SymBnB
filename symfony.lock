@@ -220,9 +220,6 @@
     "symfony/dom-crawler": {
         "version": "v5.0.2"
     },
-    "symfony/dotenv": {
-        "version": "v5.0.2"
-    },
     "symfony/error-handler": {
         "version": "v5.0.2"
     },
